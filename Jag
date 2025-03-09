@@ -162,7 +162,7 @@ local function createFloatingButton()
     icon.Parent = floatingButton
 
     floatingButton.MouseButton1Click:Connect(function()
-        loadstring(game:Http("https://raw.githubusercontent.com/Anklh/Beans/refs/heads/main/Bsj"))()
+        loadstring(game:Http("https://raw.githubusercontent.com/Anklh/Beans/refs/heads/main/Jeh"))()
         floatingButton:Destroy()
     end)
 end
